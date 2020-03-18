@@ -9,10 +9,15 @@ It is fully SIP-based, for all calling, presence and IM features.
 
 Copyright © Belledonne Communications
 
-[Belledonne Communications](https://www.linphone.org/contact) for any question about costs and services.
+[Belledonne Communications](https://www.linphone.org/contact) for any question about services.
 
 
 # Building the app
+
+1. Clone IMS-Phone repository from out GitHub:
+```
+git clone git@github.com:Sidia-IMS/IMS-Phone.git
+```
 
 If you have Android Studio, simply open the project, wait for the gradle synchronization and then build/install the app.
 It will download the linphone library from our Maven repository as an AAR file so you don't have to build anything yourself.
