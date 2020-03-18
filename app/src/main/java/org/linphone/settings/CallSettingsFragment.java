@@ -20,7 +20,6 @@
 package org.linphone.settings;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,7 +57,7 @@ public class CallSettingsFragment extends SettingsFragment {
             mAutoAnswer;
     private ListSetting mMediaEncryption;
     private TextSetting mAutoAnswerTime, mIncomingCallTimeout, mVoiceMailUri;
-    private BasicSetting mDndPermissionSettings, mAndroidNotificationSettings;
+    private BasicSetting mAndroidNotificationSettings;
 
     @Nullable
     @Override
@@ -104,9 +103,6 @@ public class CallSettingsFragment extends SettingsFragment {
 
         mVoiceMailUri = mRootView.findViewById(R.id.pref_voice_mail);
         mAutoAnswerTime.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
-
-        mDndPermissionSettings =
-                mRootView.findViewById(R.id.pref_grant_read_dnd_settings_permission);
 
         mMediaEncryptionMandatory = mRootView.findViewById(R.id.pref_media_encryption_mandatory);
     }
@@ -224,20 +220,6 @@ public class CallSettingsFragment extends SettingsFragment {
                     }
                 });
 
-        mDndPermissionSettings.setListener(
-                new SettingListenerBase() {
-                    @Override
-                    public void onClicked() {
-                        try {
-                            startActivity(
-                                    new Intent(
-                                            "android.settings.NOTIFICATION_POLICY_ACCESS_SETTINGS"));
-                        } catch (ActivityNotFoundException anfe) {
-                            Log.e("[Call Settings] Activity not found: ", anfe);
-                        }
-                    }
-                });
-
         mMediaEncryptionMandatory.setListener(
                 new SettingListenerBase() {
                     @Override
@@ -287,9 +269,6 @@ public class CallSettingsFragment extends SettingsFragment {
         mIncomingCallTimeout.setValue(mPrefs.getIncTimeout());
 
         mVoiceMailUri.setValue(mPrefs.getVoiceMailUri());
-
-        mDndPermissionSettings.setVisibility(
-                Version.sdkAboveOrEqual(Version.API23_MARSHMALLOW_60) ? View.VISIBLE : View.GONE);
 
         mMediaEncryptionMandatory.setChecked(mPrefs.isMediaEncryptionMandatory());
         mMediaEncryptionMandatory.setEnabled(mPrefs.getMediaEncryption() != MediaEncryption.None);
