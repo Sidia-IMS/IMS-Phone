@@ -61,15 +61,6 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-
-                <include layout="@layout/contact_avatar_100"/>
-
-            </RelativeLayout>
-
             <TextView
                 android:id="@+id/contact_name"
                 style="@style/big_contact_name_font"

@@ -51,7 +51,7 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
 
     private AddressText mAddress;
     private CallButton mStartCall;
-    private ImageView mAddContact, mBackToCall;
+    private ImageView mBackToCall;
 
     private boolean mIsTransfer;
     private CoreListenerStub mListener;
@@ -108,8 +108,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
                     Manifest.permission.SYSTEM_ALERT_WINDOW,
                     // Required starting Android 9 to be able to start a foreground service
                     "android.permission.FOREGROUND_SERVICE",
-                    Manifest.permission.WRITE_CONTACTS,
-                    Manifest.permission.READ_CONTACTS
                 };
 
         mIsTransfer = false;
@@ -164,7 +162,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
         if (mInterfaceLoaded) {
             mAddress = null;
             mStartCall = null;
-            mAddContact = null;
             mBackToCall = null;
         }
         if (mListener != null) mListener = null;
@@ -213,7 +210,7 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
 
     @Override
     public void onAddressChanged() {
-        mAddContact.setEnabled(!mAddress.getText().toString().isEmpty());
+        // FIXME
     }
 
     private void updateLayout() {
@@ -224,8 +221,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
 
         boolean atLeastOneCall = core.getCallsNb() > 0;
         mStartCall.setVisibility(atLeastOneCall ? View.GONE : View.VISIBLE);
-        mAddContact.setVisibility(atLeastOneCall ? View.GONE : View.VISIBLE);
-        mAddContact.setEnabled(!mAddress.getText().toString().isEmpty());
 
         if (!atLeastOneCall) {
             if (core.getVideoActivationPolicy().getAutomaticallyInitiate()) {

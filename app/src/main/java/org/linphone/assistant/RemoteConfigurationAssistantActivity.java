@@ -51,7 +51,6 @@ public class RemoteConfigurationAssistantActivity extends AssistantActivity {
 
         mWaitLayout = findViewById(R.id.waitScreen);
         mWaitLayout.setVisibility(View.GONE);
-
         mFetchAndApply = findViewById(R.id.fetch_and_apply_remote_configuration);
         mFetchAndApply.setEnabled(false);
         mFetchAndApply.setOnClickListener(

@@ -8,15 +8,6 @@
     android:orientation="horizontal"
     android:padding="5dp">
 
-    <RelativeLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:gravity="center">
-
-        <include layout="@layout/contact_avatar_call_paused" />
-
-    </RelativeLayout>
-
     <org.linphone.views.MarqueeTextView
         android:id="@+id/contact_name"
         style="@style/call_contact_name_paused_font"

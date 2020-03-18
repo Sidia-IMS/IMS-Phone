@@ -23,7 +23,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import org.linphone.R;
@@ -34,7 +33,6 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder
     public final ImageView detail;
     public final CheckBox select;
     public final ImageView callDirection;
-    public final RelativeLayout avatarLayout;
     public final LinearLayout separator;
     public final TextView separatorText;
 
@@ -46,7 +44,6 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder
         detail = view.findViewById(R.id.detail);
         select = view.findViewById(R.id.delete);
         callDirection = view.findViewById(R.id.icon);
-        avatarLayout = view.findViewById(R.id.avatar_layout);
         separator = view.findViewById(R.id.separator);
         separatorText = view.findViewById(R.id.separator_text);
         mListener = listener;

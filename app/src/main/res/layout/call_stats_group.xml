@@ -5,24 +5,12 @@
     android:layout_margin="10dp">
 
     <RelativeLayout
-        android:id="@+id/avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_margin="5dp">
-
-        <include layout="@layout/contact_avatar" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@+id/dropdown"
-        android:layout_toRightOf="@id/avatar">
+        android:layout_toLeftOf="@+id/dropdown">
 
         <org.linphone.views.MarqueeTextView
             android:id="@+id/name"

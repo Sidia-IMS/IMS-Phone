@@ -20,17 +20,13 @@
 package org.linphone.call;
 
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import org.linphone.R;
 
 public class CallStatsViewHolder {
-
-    public final RelativeLayout avatarLayout;
     public final TextView participantName, sipUri;
 
     public CallStatsViewHolder(View v) {
-        avatarLayout = v.findViewById(R.id.avatar_layout);
         participantName = v.findViewById(R.id.name);
         sipUri = v.findViewById(R.id.sipUri);
     }

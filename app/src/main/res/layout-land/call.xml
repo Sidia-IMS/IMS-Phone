@@ -43,18 +43,6 @@
 
                     <include layout="@layout/call_active_header" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/active_call_info"
-                        android:layout_centerInParent="true"
-                        android:layout_margin="5dp"
-                        android:gravity="center">
-
-                        <include layout="@layout/contact_avatar_200" />
-
-                    </RelativeLayout>
-
                     <include layout="@layout/call_paused_by_remote" android:visibility="gone" />
 
                     <ImageView

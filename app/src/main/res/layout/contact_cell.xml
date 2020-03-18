@@ -32,16 +32,6 @@
         android:layout_margin="5dp"
         android:gravity="center_vertical">
 
-        <RelativeLayout
-            android:id="@+id/avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <include layout="@layout/contact_avatar" />
-
-        </RelativeLayout>
-
         <CheckBox
             android:id="@+id/delete"
             android:layout_width="wrap_content"
@@ -84,8 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/friendLinphone"
-            android:layout_toRightOf="@id/avatar">
+            android:layout_toLeftOf="@id/friendLinphone">
 
             <org.linphone.views.MarqueeTextView
                 android:id="@+id/name"

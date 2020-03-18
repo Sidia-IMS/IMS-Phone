@@ -25,8 +25,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.TextureView;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,7 +53,6 @@ public class CallIncomingActivity extends LinphoneGenericActivity {
     private Call mCall;
     private CoreListenerStub mListener;
     private boolean mAlreadyAcceptedOrDeniedCall;
-    private TextureView mVideoDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +66,6 @@ public class CallIncomingActivity extends LinphoneGenericActivity {
 
         mName = findViewById(R.id.contact_name);
         mNumber = findViewById(R.id.contact_number);
-        mVideoDisplay = findViewById(R.id.videoSurface);
 
         CallIncomingAnswerButton mAccept = findViewById(R.id.answer_button);
         CallIncomingDeclineButton mDecline = findViewById(R.id.decline_button);
@@ -157,13 +153,6 @@ public class CallIncomingActivity extends LinphoneGenericActivity {
         String displayName = LinphoneUtils.getAddressDisplayName(address);
         mName.setText(displayName);
         mNumber.setText(address.asStringUriOnly());
-
-        if (LinphonePreferences.instance().acceptIncomingEarlyMedia()) {
-            if (mCall.getCurrentParams() != null && mCall.getCurrentParams().videoEnabled()) {
-                findViewById(R.id.avatar_layout).setVisibility(View.GONE);
-                mCall.getCore().setNativeVideoWindowId(mVideoDisplay);
-            }
-        }
     }
 
     @Override
@@ -181,7 +170,6 @@ public class CallIncomingActivity extends LinphoneGenericActivity {
         mNumber = null;
         mCall = null;
         mListener = null;
-        mVideoDisplay = null;
 
         super.onDestroy();
     }

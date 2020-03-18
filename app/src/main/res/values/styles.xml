@@ -73,98 +73,6 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!-- Chat related -->
-
-    <style name="imdn_read_font" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/imdn_read_color</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="imdn_delivered_sent_font" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/grey_color</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="imdn_undelivered_font" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/red_color</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="chat_bubble_time_font" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">@color/chat_bubble_text_color</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:lineSpacingExtra">0sp</item>
-    </style>
-
-    <style name="chat_bubble_forward_font" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">@color/chat_bubble_text_color</item>
-        <item name="android:textSize">10sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:lineSpacingExtra">3.3sp</item>
-    </style>
-
-    <style name="chat_bubble_ephemeral_font" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">@color/primary_color</item>
-        <item name="android:textSize">10sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:lineSpacingExtra">3.3sp</item>
-    </style>
-
-    <style name="chat_room_ephemeral_desc_font" parent="android:style/TextAppearance.Large">
-        <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="chat_room_ephemeral_item_font" parent="android:style/TextAppearance.Large">
-        <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="chat_room_ephemeral_selected_item_font" parent="android:style/TextAppearance.Large">
-        <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="chat_bubble_message_font" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/dark_grey_color</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:lineSpacingExtra">-1.7sp</item>
-    </style>
-
-    <style name="chat_bubble_file_name_font" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">?attr/secondaryTextColor</item>
-        <item name="android:textSize">11.7sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">normal</item>
-    </style>
-
-    <style name="group_chat_event_font" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">?attr/primarySubtextLightColor</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:lineSpacingExtra">0sp</item>
-        <item name="android:textStyle">italic</item>
-    </style>
-
-    <style name="group_chat_security_event_font" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/red_color</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:lineSpacingExtra">0sp</item>
-        <item name="android:textStyle">italic</item>
-    </style>
-
     <!-- Contact related -->
 
     <style name="contact_invite_font" parent="@android:style/TextAppearance.Medium">
@@ -182,24 +90,6 @@
     <style name="contact_name_list_cell_font" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="generated_contact_avatar_font" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">?attr/secondaryTextColor</item>
-        <item name="android:textSize">21sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="generated_contact_avatar_100_font" parent="@android:style/TextAppearance.Large">
-        <item name="android:textColor">?attr/secondaryTextColor</item>
-        <item name="android:textSize">60sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="generated_contact_avatar_200_font" parent="@android:style/TextAppearance.Large">
-        <item name="android:textColor">?attr/secondaryTextColor</item>
-        <item name="android:textSize">1500sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="contact_edit_form_font" parent="@android:style/TextAppearance.Medium">

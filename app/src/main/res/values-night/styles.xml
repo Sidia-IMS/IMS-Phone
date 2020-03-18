@@ -33,7 +33,7 @@
         <item name="drawableTintDisabledColor">@color/light_grey_color</item>
         <item name="drawableTintOverColor">@color/primary_color</item>
 
-        <item name="lighToolbarBackgroundColor">@color/dark_grey_color</item>
+        <item name="lighToolbarBackgroundColor">@color/primary_light_color</item>
         <item name="lighToolbarBackgroundDisabledColor">@color/light_grey_color</item>
         <item name="lighToolbarTextColor">@color/white_color</item>
         <item name="darkToolbarBackgroundColor">@color/dark_grey_color</item>

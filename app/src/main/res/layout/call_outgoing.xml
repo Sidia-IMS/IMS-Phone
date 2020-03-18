@@ -59,17 +59,6 @@
             android:singleLine="true"
             android:paddingBottom="10dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/contact_number"
-            android:layout_margin="5dp"
-            android:gravity="center">
-
-            <include layout="@layout/contact_avatar_200" />
-
-        </RelativeLayout>
-
     </RelativeLayout>
 
     <LinearLayout

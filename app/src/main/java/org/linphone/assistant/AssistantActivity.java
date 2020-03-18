@@ -195,21 +195,9 @@ public abstract class AssistantActivity extends LinphoneGenericActivity
         if (needsEchoCalibration && !echoCalibrationDone) {
             intent = new Intent(this, EchoCancellerCalibrationAssistantActivity.class);
         } else {
-            /*boolean openH264 = LinphonePreferences.instance().isOpenH264CodecDownloadEnabled();
-            boolean codecFound =
-                    LinphoneManager.getInstance().getOpenH264DownloadHelper().isCodecFound();
-            boolean abiSupported =
-                    Version.getCpuAbis().contains("armeabi-v7a")
-                            && !Version.getCpuAbis().contains("x86");
-            boolean androidVersionOk = Version.sdkStrictlyBelow(Build.VERSION_CODES.M);
-
-            if (openH264 && abiSupported && androidVersionOk && !codecFound) {
-                intent = new Intent(this, OpenH264DownloadAssistantActivity.class);
-            } else {*/
             intent = new Intent(this, DialerActivity.class);
             intent.addFlags(
                     Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            // }
         }
         startActivity(intent);
     }
