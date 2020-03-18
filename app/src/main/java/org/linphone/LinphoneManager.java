@@ -55,7 +55,6 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListener;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.Factory;
-import org.linphone.core.PresenceActivity;
 import org.linphone.core.PresenceBasicStatus;
 import org.linphone.core.PresenceModel;
 import org.linphone.core.ProxyConfig;
@@ -96,7 +95,6 @@ public class LinphoneManager implements SensorEventListener {
     private boolean mExited;
     private boolean mCallGsmON;
     private boolean mProximitySensingEnabled;
-    private boolean mHasLastCallSasBeenRejected;
     private Runnable mIterateRunnable;
 
     public LinphoneManager(Context c) {
@@ -137,8 +135,6 @@ public class LinphoneManager implements SensorEventListener {
 
         Log.i("[Manager] Registering phone state listener");
         mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-
-        mHasLastCallSasBeenRejected = false;
         mCallManager = new CallManager(c);
 
         File f = new File(mUserCertsPath);
@@ -605,33 +601,11 @@ public class LinphoneManager implements SensorEventListener {
 
     /* Presence stuff */
 
-    private boolean isPresenceModelActivitySet() {
-        if (mCore != null) {
-            return mCore.getPresenceModel() != null
-                    && mCore.getPresenceModel().getActivity() != null;
-        }
-        return false;
-    }
-
     public void changeStatusToOnline() {
         if (mCore == null) return;
         PresenceModel model = mCore.createPresenceModel();
         model.setBasicStatus(PresenceBasicStatus.Open);
         mCore.setPresenceModel(model);
-    }
-
-    public void changeStatusToOnThePhone() {
-        if (mCore == null) return;
-
-        if (isPresenceModelActivitySet()
-                && mCore.getPresenceModel().getActivity().getType()
-                        != PresenceActivity.Type.OnThePhone) {
-            mCore.getPresenceModel().getActivity().setType(PresenceActivity.Type.OnThePhone);
-        } else if (!isPresenceModelActivitySet()) {
-            PresenceModel model =
-                    mCore.createPresenceModelWithActivity(PresenceActivity.Type.OnThePhone, null);
-            mCore.setPresenceModel(model);
-        }
     }
 
     private void changeStatusToOffline() {
@@ -791,13 +765,5 @@ public class LinphoneManager implements SensorEventListener {
 
     private String getString(int key) {
         return mContext.getString(key);
-    }
-
-    public boolean hasLastCallSasBeenRejected() {
-        return mHasLastCallSasBeenRejected;
-    }
-
-    public void lastCallSasRejected(boolean rejected) {
-        mHasLastCallSasBeenRejected = rejected;
     }
 }

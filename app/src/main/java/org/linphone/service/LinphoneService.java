@@ -27,10 +27,7 @@ import android.view.WindowManager;
 import org.linphone.LinphoneContext;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
-import org.linphone.call.views.LinphoneGL2JNIViewOverlay;
 import org.linphone.call.views.LinphoneOverlay;
-import org.linphone.call.views.LinphoneTextureViewOverlay;
-import org.linphone.core.Call;
 import org.linphone.core.Core;
 import org.linphone.core.tools.Log;
 import org.linphone.mediastream.Version;
@@ -146,26 +143,6 @@ public final class LinphoneService extends Service {
     }
 
     /* Managers accessors */
-
-    public void createOverlay() {
-        Log.i("[Service] Creating video overlay");
-        if (mOverlay != null) destroyOverlay();
-
-        Core core = LinphoneManager.getCore();
-        Call call = core.getCurrentCall();
-        if (call == null || !call.getCurrentParams().videoEnabled()) return;
-
-        if ("MSAndroidOpenGLDisplay".equals(core.getVideoDisplayFilter())) {
-            mOverlay = new LinphoneGL2JNIViewOverlay(this);
-        } else {
-            mOverlay = new LinphoneTextureViewOverlay(this);
-        }
-        WindowManager.LayoutParams params = mOverlay.getWindowManagerLayoutParams();
-        params.x = 0;
-        params.y = 0;
-        mOverlay.addToWindowManager(mWindowManager, params);
-    }
-
     public void destroyOverlay() {
         Log.i("[Service] Destroying video overlay");
         if (mOverlay != null) {

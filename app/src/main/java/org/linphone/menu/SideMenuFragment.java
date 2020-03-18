@@ -89,12 +89,6 @@ public class SideMenuFragment extends Fragment {
                     new SideMenuItem(
                             getResources().getString(R.string.inapp), R.drawable.menu_options));
         }
-        if (!getResources().getBoolean(R.bool.hide_recordings_from_side_menu)) {
-            sideMenuItems.add(
-                    new SideMenuItem(
-                            getResources().getString(R.string.menu_recordings),
-                            R.drawable.menu_recordings));
-        }
         sideMenuItems.add(
                 new SideMenuItem(
                         getResources().getString(R.string.menu_about), R.drawable.menu_about));

@@ -31,12 +31,10 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
-import org.linphone.core.Address;
 import org.linphone.mediastream.Version;
 
 public class Compatibility {
     public static final String INTENT_NOTIF_ID = "NOTIFICATION_ID";
-    public static final String INTENT_REPLY_NOTIF_ACTION = "org.linphone.REPLY_ACTION";
     public static final String INTENT_HANGUP_CALL_NOTIF_ACTION = "org.linphone.HANGUP_CALL_ACTION";
     public static final String INTENT_ANSWER_CALL_NOTIF_ACTION = "org.linphone.ANSWER_CALL_ACTION";
 
@@ -183,21 +181,6 @@ public class Compatibility {
         if (Version.sdkStrictlyBelow(Version.API27_OREO_81)) {
             ApiTwentyOnePlus.setTurnScreenOn(activity, enable);
         }
-    }
-
-    public static boolean isDoNotDisturbSettingsAccessGranted(Context context) {
-        if (Version.sdkAboveOrEqual(Version.API23_MARSHMALLOW_60)) {
-            return ApiTwentyThreePlus.isDoNotDisturbSettingsAccessGranted(context);
-        }
-        return true;
-    }
-
-    public static boolean isDoNotDisturbPolicyAllowingRinging(
-            Context context, Address remoteAddress) {
-        if (Version.sdkAboveOrEqual(Version.API23_MARSHMALLOW_60)) {
-            return ApiTwentyThreePlus.isDoNotDisturbPolicyAllowingRinging(context, remoteAddress);
-        }
-        return true;
     }
 
     public static void enterPipMode(Activity activity) {

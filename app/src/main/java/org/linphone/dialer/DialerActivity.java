@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +50,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
 
     private AddressText mAddress;
     private CallButton mStartCall;
-    private ImageView mBackToCall;
 
     private boolean mIsTransfer;
     private CoreListenerStub mListener;
@@ -162,7 +160,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
         if (mInterfaceLoaded) {
             mAddress = null;
             mStartCall = null;
-            mBackToCall = null;
         }
         if (mListener != null) mListener = null;
 
@@ -178,15 +175,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
 
         mStartCall = view.findViewById(R.id.start_call);
         mStartCall.setAddressWidget(mAddress);
-
-        mBackToCall = view.findViewById(R.id.back_to_call);
-        mBackToCall.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        goBackToCall();
-                    }
-                });
 
         if (getIntent() != null) {
             mAddress.setText(getIntent().getStringExtra("SipUri"));
@@ -229,8 +217,6 @@ public class DialerActivity extends MainActivity implements AddressText.AddressC
                 mStartCall.setImageResource(R.drawable.call_audio_start);
             }
         }
-
-        mBackToCall.setVisibility(atLeastOneCall ? View.VISIBLE : View.GONE);
     }
 
     private void handleIntentParams(Intent intent) {

@@ -63,15 +63,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.2" />
 
-        <ImageView
-            android:id="@+id/newContact"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:background="?attr/button_background_drawable"
-            android:contentDescription="@string/content_description_new_contact"
-            android:padding="15dp"
-            android:src="@drawable/contact_add" />
+
 
         <ImageView
             android:id="@+id/edit"

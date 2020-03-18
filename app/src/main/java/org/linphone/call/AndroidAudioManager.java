@@ -35,7 +35,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import org.linphone.LinphoneManager;
 import org.linphone.R;
-import org.linphone.compatibility.Compatibility;
 import org.linphone.core.Address;
 import org.linphone.core.Call;
 import org.linphone.core.Core;
@@ -275,13 +274,6 @@ public class AndroidAudioManager {
         if (!LinphonePreferences.instance().isDeviceRingtoneEnabled()) {
             // Enable speaker audio route, linphone library will do the ringing itself automatically
             routeAudioToSpeaker();
-            return;
-        }
-
-        boolean doNotDisturbPolicyAllowsRinging =
-                Compatibility.isDoNotDisturbPolicyAllowingRinging(mContext, remoteAddress);
-        if (!doNotDisturbPolicyAllowsRinging) {
-            Log.e("[Audio Manager] Do not ring as Android Do Not Disturb Policy forbids it");
             return;
         }
 

@@ -49,7 +49,7 @@
   <string name="link_account">Conecte sua conta</string>
   <string name="update_available">Uma atualização está disponível</string>
   <!--Launch screen-->
-  <string name="app_description">O cliente SIP <i>livre</i></string>
+  <string name="app_description">An <i>IMS</i> Softphone</string>
   <!--Assistant-->
   <string name="welcome">Bem-vindo</string>
   <string name="assistant">Assistente</string>
