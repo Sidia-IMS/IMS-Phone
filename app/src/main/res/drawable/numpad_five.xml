@@ -2,10 +2,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <bitmap android:src="@drawable/numpad_5"
-            android:tint="?attr/accentColor"/>
+            android:tint="@color/colorAccent"/>
     </item>
     <item>
         <bitmap android:src="@drawable/numpad_5"
-            android:tint="?attr/drawableTintColor"/>
+            android:tint="@color/dark_grey_color"/>
     </item>
 </selector>

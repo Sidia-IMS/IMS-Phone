@@ -1,115 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/backgroundColor">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TableRow
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <org.linphone.dialer.views.Digit
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Row1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/TopCenter"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <ImageButton
             android:id="@+id/Digit1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/Digit2"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_one"
+            android:background="@drawable/numpad_1"
             android:soundEffectsEnabled="true"
-            android:text="1" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="1"/>
+        <ImageButton
             android:id="@+id/Digit2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_two"
+            android:background="@drawable/numpad_2"
             android:soundEffectsEnabled="true"
-            android:text="2" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="2"/>
+        <ImageButton
             android:id="@+id/Digit3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/Digit2"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_three"
+            android:background="@drawable/numpad_3"
             android:soundEffectsEnabled="true"
-            android:text="3" />
+            android:contentDescription="3"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </TableRow>
+    <View
+        android:id="@+id/TopCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/MidCenter"/>
 
-    <TableRow
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <org.linphone.dialer.views.Digit
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Row2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/TopCenter"
+        app:layout_constraintBottom_toTopOf="@id/MidCenter"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <ImageButton
             android:id="@+id/Digit4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/Digit5"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_four"
+            android:background="@drawable/numpad_4"
             android:soundEffectsEnabled="true"
-            android:text="4" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="4"/>
+        <ImageButton
             android:id="@+id/Digit5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_five"
+            android:background="@drawable/numpad_5"
             android:soundEffectsEnabled="true"
-            android:text="5" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="5"/>
+        <ImageButton
             android:id="@+id/Digit6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/Digit5"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_six"
+            android:background="@drawable/numpad_6"
             android:soundEffectsEnabled="true"
-            android:text="6" />
+            android:contentDescription="6"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </TableRow>
+    <View
+        android:id="@+id/MidCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TableRow
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <org.linphone.dialer.views.Digit
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Row3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/MidCenter"
+        app:layout_constraintBottom_toTopOf="@+id/BottomCenter"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <ImageButton
             android:id="@+id/Digit7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/Digit8"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_seven"
+            android:background="@drawable/numpad_7"
             android:soundEffectsEnabled="true"
-            android:text="7" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="7"/>
+        <ImageButton
             android:id="@+id/Digit8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_eight"
+            android:background="@drawable/numpad_8"
             android:soundEffectsEnabled="true"
-            android:text="8" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="8"/>
+        <ImageButton
             android:id="@+id/Digit9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/Digit8"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_nine"
+            android:background="@drawable/numpad_9"
             android:soundEffectsEnabled="true"
-            android:text="9" />
+            android:contentDescription="9"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </TableRow>
+    <View
+        android:id="@+id/BottomCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/MidCenter"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <TableRow
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <org.linphone.dialer.views.Digit
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Row4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/BottomCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <ImageButton
             android:id="@+id/DigitStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/Digit00"
             style="@style/DialerDigit"
             android:background="@drawable/numpad_star_digit"
             android:soundEffectsEnabled="true"
-            android:text="*" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="*"/>
+        <ImageButton
             android:id="@+id/Digit00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
             android:background="@drawable/numpad_zero"
             android:soundEffectsEnabled="true"
-            android:text="0+" />
-
-        <org.linphone.dialer.views.Digit
+            android:contentDescription="0+"/>
+        <ImageButton
             android:id="@+id/DigitHash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/Digit00"
             style="@style/DialerDigit"
             android:background="@drawable/numpad_sharp"
             android:soundEffectsEnabled="true"
-            android:text="#" />
-
-    </TableRow>
-
-</TableLayout>
+            android:contentDescription="#"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
