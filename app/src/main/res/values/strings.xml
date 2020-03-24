@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">IMS Phone</string>
 
+    <!-- Dialer -->
+    <string name="address_bar_hint">Enter a number or an address</string>
+
     <!-- Content description -->
     <string name="content_description_backspace">Backspace</string>
 </resources>
