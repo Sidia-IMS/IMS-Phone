@@ -1,58 +1,56 @@
 package com.sidia.ims.imsphone.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 
 import com.sidia.ims.imsphone.R;
+import com.sidia.ims.imsphone.dialer.DialerFragment;
+import com.sidia.ims.imsphone.history.HistoryFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText mAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mAddress = findViewById(R.id.address);
+        if (savedInstanceState == null) {
+            DialerFragment dialerFragment = DialerFragment.newInstance();
+            FragmentTransaction transaction = getTransaction(dialerFragment);
+            transaction.commitNow();
+        }
     }
 
     @Override
     public void onClick(View view) {
-        String currentText = mAddress.getText().toString();
         switch (view.getId()) {
-            case R.id.erase:
-                currentText = currentText.length() < 2 ? "" : currentText.substring(0, currentText.length() - 1);
-                mAddress.setText(currentText);
+            case R.id.history:
+                HistoryFragment historyFragment = HistoryFragment.newInstance();
+                FragmentTransaction historyTransaction = getTransaction(historyFragment);
+
+                historyTransaction.addToBackStack(null);
+                historyTransaction.commit();
                 break;
-            case R.id.start_call:
-                String telUri = "tel:" + currentText
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse(telUri));
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(callIntent);
+            case R.id.dialer:
+                DialerFragment dialerFragment = DialerFragment.newInstance();
+                FragmentTransaction dialerTransaction = getTransaction(dialerFragment);
+
+                dialerTransaction.addToBackStack(null);
+                dialerTransaction.commit();
+                break;
             default:
-                ImageButton digit = (ImageButton) view;
-                currentText += digit.getContentDescription().toString();
-                mAddress.setText(currentText);
                 break;
         }
+    }
+
+    private FragmentTransaction getTransaction(Fragment fragment) {
+        fragment.setArguments(getIntent().getExtras());
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, fragment);
+
+        return transaction;
     }
 }

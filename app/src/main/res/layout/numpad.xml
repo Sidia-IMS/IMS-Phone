@@ -18,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@id/Digit2"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_one"
+            android:background="@drawable/ic_numpad_1"
             android:soundEffectsEnabled="true"
             android:contentDescription="1"
             android:onClick="onClick" />
@@ -30,7 +30,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_two"
+            android:background="@drawable/ic_numpad_2"
             android:soundEffectsEnabled="true"
             android:contentDescription="2"
             android:onClick="onClick" />
@@ -41,20 +41,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/Digit2"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_three"
+            android:background="@drawable/ic_numpad_3"
             android:soundEffectsEnabled="true"
             android:contentDescription="3"
             android:onClick="onClick" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/TopCenter"
         android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/MidCenter"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Row2"
@@ -70,7 +68,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@id/Digit5"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_four"
+            android:background="@drawable/ic_numpad_4"
             android:soundEffectsEnabled="true"
             android:contentDescription="4"
             android:onClick="onClick"/>
@@ -82,7 +80,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_five"
+            android:background="@drawable/ic_numpad_5"
             android:soundEffectsEnabled="true"
             android:contentDescription="5"
             android:onClick="onClick"/>
@@ -93,20 +91,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/Digit5"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_six"
+            android:background="@drawable/ic_numpad_6"
             android:soundEffectsEnabled="true"
             android:contentDescription="6"
             android:onClick="onClick"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/MidCenter"
         android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Row3"
@@ -122,7 +118,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@id/Digit8"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_seven"
+            android:background="@drawable/ic_numpad_7"
             android:soundEffectsEnabled="true"
             android:contentDescription="7"
             android:onClick="onClick"/>
@@ -134,7 +130,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_eight"
+            android:background="@drawable/ic_numpad_8"
             android:soundEffectsEnabled="true"
             android:contentDescription="8"
             android:onClick="onClick"/>
@@ -145,20 +141,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/Digit8"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_nine"
+            android:background="@drawable/ic_numpad_9"
             android:soundEffectsEnabled="true"
             android:contentDescription="9"
             android:onClick="onClick"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/BottomCenter"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/MidCenter"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Row4"
@@ -174,7 +168,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toLeftOf="@id/Digit00"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_star_digit"
+            android:background="@drawable/ic_numpad_star"
             android:soundEffectsEnabled="true"
             android:contentDescription="*"
             android:onClick="onClick"/>
@@ -186,7 +180,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_zero"
+            android:background="@drawable/ic_numpad_0"
             android:soundEffectsEnabled="true"
             android:contentDescription="0"
             android:onClick="onClick"/>
@@ -197,7 +191,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/Digit00"
             style="@style/DialerDigit"
-            android:background="@drawable/numpad_sharp"
+            android:background="@drawable/ic_numpad_hash"
             android:soundEffectsEnabled="true"
             android:contentDescription="#"
             android:onClick="onClick"/>
