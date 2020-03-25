@@ -26,11 +26,9 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".receivers.ImsPhoneReceiver" >
+        <receiver android:name=".receivers.CallReceiver" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
@@ -39,8 +37,6 @@
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.NEW_OUTGOING_CALL" />
 
 </manifest>

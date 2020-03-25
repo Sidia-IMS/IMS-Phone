@@ -1,6 +1,7 @@
 package com.sidia.ims.imsphone.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,11 +13,13 @@ import com.sidia.ims.imsphone.dialer.DialerFragment;
 import com.sidia.ims.imsphone.history.HistoryFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private ConstraintLayout footerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        footerLayout = findViewById(R.id.footerLayout);
         if (savedInstanceState == null) {
             DialerFragment dialerFragment = DialerFragment.newInstance();
             FragmentTransaction transaction = getTransaction(dialerFragment);

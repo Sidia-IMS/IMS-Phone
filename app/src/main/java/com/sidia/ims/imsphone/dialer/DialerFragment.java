@@ -20,20 +20,31 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.sidia.ims.imsphone.R;
-import com.sidia.ims.imsphone.activities.ui.mainactivity.MainActivityViewModel;
+import com.sidia.ims.imsphone.activities.ui.mainactivity.ImsPhoneViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DialerFragment extends Fragment implements View.OnClickListener {
-    private static final int MULTIPLE_PERMISSIONS = 10;
-    String[] PERMISSIONS = {
-            android.Manifest.permission.CALL_PHONE
+    int[] digitsId = {
+            R.id.erase,
+            R.id.start_call,
+            R.id.Digit00,
+            R.id.Digit1,
+            R.id.Digit2,
+            R.id.Digit3,
+            R.id.Digit4,
+            R.id.Digit5,
+            R.id.Digit6,
+            R.id.Digit7,
+            R.id.Digit8,
+            R.id.Digit9,
     };
 
     private EditText mAddress;
     private ConstraintLayout mLayout;
-    private MainActivityViewModel mViewModel;
+    private ImsPhoneViewModel mViewModel;
+    private View viewInflate;
 
     public static DialerFragment newInstance() {
         return new DialerFragment();
@@ -43,20 +54,25 @@ public class DialerFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_dailer, container, false);
-        mAddress = getActivity().findViewById(R.id.address);
-        mLayout = getActivity().findViewById(R.id.constraintLayout);
-        return view;
+        viewInflate =  inflater.inflate(R.layout.fragment_dailer, container, false);
+        return viewInflate;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-        // TODO: Use the ViewModel
+        mViewModel = ViewModelProviders.of(this).get(ImsPhoneViewModel.class);
+        mAddress = viewInflate.findViewById(R.id.address);
+        mLayout = viewInflate.findViewById(R.id.constraintLayout);
+
+        for (int id : digitsId) {
+            ImageButton btn = viewInflate.findViewById(id);
+            btn.setOnClickListener(this);
+        }
+
+        mViewModel.checkPermissions(getActivity(), ImsPhoneViewModel.PERMISSIONS);
     }
 
-    @Override
     public void onClick(View view) {
         String currentText = mAddress.getText().toString();
         switch (view.getId()) {
@@ -67,7 +83,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener {
             case R.id.start_call:
                 String telUri = "tel:" + currentText;
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    checkPermissions(PERMISSIONS);
+                    mViewModel.checkPermissions(getActivity(), ImsPhoneViewModel.PERMISSIONS);
                     return;
                 }
 
@@ -83,40 +99,12 @@ public class DialerFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private  boolean checkPermissions(String permissionsNeeded[]) {
-        /*
-        int result;
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        for (String p : PERMISSIONS) {
-            result = ContextCompat.checkSelfPermission(this, p);
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(p);
-            }
-        }
-        */
-
-        if (permissionsNeeded.length > 0) {
-            ActivityCompat.requestPermissions(getActivity(), permissionsNeeded, MULTIPLE_PERMISSIONS);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MULTIPLE_PERMISSIONS:
+            case ImsPhoneViewModel.MULTIPLE_PERMISSIONS:
                 if (grantResults.length > 0) {
-                    boolean allPermissionsGranted = true;
-                    List<String> missingPermissions = new ArrayList<>();
-
-                    for (int i = 0; i < permissions.length; i++) {
-                        boolean permissionGranted= grantResults[i] == PackageManager.PERMISSION_GRANTED;
-                        if (!permissionGranted) {
-                            missingPermissions.add(permissions[i]);
-                        }
-                        allPermissionsGranted = allPermissionsGranted && permissionGranted;
-                    }
+                    boolean allPermissionsGranted = mViewModel.requestResult(permissions, grantResults);
 
                     if (!allPermissionsGranted) {
                         Snackbar.make(mLayout, "The app has not been granted permissions:\n. Hence, it cannot function properly. Please consider granting it this permission", Snackbar.LENGTH_LONG);
