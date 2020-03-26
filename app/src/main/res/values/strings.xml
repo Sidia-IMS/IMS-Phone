@@ -4,6 +4,16 @@
     <!-- Dialer -->
     <string name="address_bar_hint">Enter a number or an address</string>
 
+    <!-- Call -->
+    <string name="incoming_call">Incoming Call</string>
+
+
+    <!-- Common -->
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+
     <!-- Content description -->
     <string name="content_description_backspace">Backspace</string>
+    <string name="content_description_decline">Decline</string>
+    <string name="content_description_accept">Accept</string>
 </resources>

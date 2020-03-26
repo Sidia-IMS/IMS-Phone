@@ -27,7 +27,7 @@ import java.util.List;
 
 public class DialerFragment extends Fragment implements View.OnClickListener {
     int[] digitsId = {
-            R.id.erase,
+            //R.id.erase,
             R.id.start_call,
             R.id.Digit00,
             R.id.Digit1,

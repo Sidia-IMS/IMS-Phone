@@ -6,7 +6,6 @@ import android.telecom.ConnectionService;
 import android.telecom.DisconnectCause;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
-import android.util.Log;
 
 import com.sidia.ims.imsphone.telephony.ImsPhoneConnection;
 
@@ -18,11 +17,15 @@ public class ImsPhoneService extends ConnectionService {
             return Connection.createFailedConnection(new DisconnectCause(DisconnectCause.ERROR, "No extras on request."));
         }
 
-        Log.d("BLA", "onCreateIncomingConnection");
-        ImsPhoneConnection connection = new ImsPhoneConnection();
+        String name = request.getAddress().toString();
+        name = name.replace("tel:", "");
+        ImsPhoneConnection connection = new ImsPhoneConnection(getApplicationContext(), name);
+        connection.setConnectionProperties(Connection.PROPERTY_SELF_MANAGED);
+        connection.setCallerDisplayName(name, TelecomManager.PRESENTATION_ALLOWED);
         connection.setAddress(request.getAddress(), TelecomManager.PRESENTATION_ALLOWED);
         connection.setInitializing();
         connection.setActive();
+
         return connection;
     }
 }

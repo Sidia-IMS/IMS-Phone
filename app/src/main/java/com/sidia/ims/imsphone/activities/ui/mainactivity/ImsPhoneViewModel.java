@@ -14,9 +14,10 @@ public class ImsPhoneViewModel extends ViewModel {
     public static final int MULTIPLE_PERMISSIONS = 10;
 
     public static final String[] PERMISSIONS = {
-            android.Manifest.permission.CALL_PHONE,
-            android.Manifest.permission.READ_PHONE_STATE,
-            android.Manifest.permission.READ_CALL_LOG
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_CALL_LOG,
+            Manifest.permission.ANSWER_PHONE_CALLS
     };
 
     public boolean checkPermissions(Activity activity, String permissionsNeeded[]) {
