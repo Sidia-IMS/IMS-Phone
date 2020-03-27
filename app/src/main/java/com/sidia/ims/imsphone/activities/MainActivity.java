@@ -1,8 +1,14 @@
 package com.sidia.ims.imsphone.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.annotation.SuppressLint;
 import android.app.role.RoleManager;
@@ -10,8 +16,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telecom.TelecomManager;
+import android.view.Menu;
 import android.view.View;
 
+import com.google.android.material.navigation.NavigationView;
 import com.sidia.ims.imsphone.R;
 import com.sidia.ims.imsphone.dialer.DialerFragment;
 import com.sidia.ims.imsphone.history.HistoryFragment;
@@ -19,6 +27,8 @@ import com.sidia.ims.imsphone.history.HistoryFragment;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_ID = 1;
 
+    private AppBarConfiguration mAppBarConfiguration;
+    private NavController mNavController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +41,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             transaction.commitNow();
         }
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+/*
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        mNavController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        mAppBarConfiguration = new AppBarConfiguration.Builder(mNavController.getGraph())
+                .setDrawerLayout(drawer).build();
+        NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, mNavController);
+*/
         requestRole();
     }
 
@@ -56,7 +78,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void requestRole() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return NavigationUI.navigateUp(mNavController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
+
+    private void requestRole() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             @SuppressLint("WrongConstant")
             RoleManager roleManager = (RoleManager) getSystemService(Context.ROLE_SERVICE);

@@ -20,7 +20,7 @@ public class ImsPhoneViewModel extends ViewModel {
             Manifest.permission.ANSWER_PHONE_CALLS
     };
 
-    public boolean checkPermissions(Activity activity, String permissionsNeeded[]) {
+    public static boolean checkPermissions(Activity activity, String permissionsNeeded[]) {
         /*
         int result;
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -39,7 +39,7 @@ public class ImsPhoneViewModel extends ViewModel {
         return true;
     }
 
-    public boolean requestResult(String permissions[], int[] grantResults) {
+    public static boolean requestResult(String permissions[], int[] grantResults) {
         boolean allPermissionsGranted = true;
         List<String> missingPermissions = new ArrayList<>();
 

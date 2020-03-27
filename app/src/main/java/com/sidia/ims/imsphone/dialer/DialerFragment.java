@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class DialerFragment extends Fragment implements View.OnClickListener {
     int[] digitsId = {
-            //R.id.erase,
+            R.id.erase,
             R.id.start_call,
             R.id.Digit00,
             R.id.Digit1,
@@ -70,7 +71,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener {
             btn.setOnClickListener(this);
         }
 
-        mViewModel.checkPermissions(getActivity(), ImsPhoneViewModel.PERMISSIONS);
+        ImsPhoneViewModel.checkPermissions(getActivity(), ImsPhoneViewModel.PERMISSIONS);
     }
 
     public void onClick(View view) {
@@ -83,7 +84,7 @@ public class DialerFragment extends Fragment implements View.OnClickListener {
             case R.id.start_call:
                 String telUri = "tel:" + currentText;
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    mViewModel.checkPermissions(getActivity(), ImsPhoneViewModel.PERMISSIONS);
+                    ImsPhoneViewModel.checkPermissions(getActivity(), ImsPhoneViewModel.PERMISSIONS);
                     return;
                 }
 

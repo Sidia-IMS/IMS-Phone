@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.sidia.ims.imsphone.dialer.DialerFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_dailer">
+
+        <action
+            android:id="@+id/action_DialerFragment_to_AboutFragment"
+            app:destination="@+id/nav_about"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.sidia.ims.imsphone.activities.ui.mainactivity.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about">
+
+        <action
+            android:id="@+id/action_AboutFragment_to_DialerFragment"
+            app:destination="@+id/nav_home"
+            />
+    </fragment>
+</navigation>
