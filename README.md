@@ -1,4 +1,3 @@
 # SIDIA IMS projects
 
-IMS projects of Daniel Augusto Rodrigues Lima de Souza
-
+IMS projects of José Alberto Gurgel Cardoso Neto
