@@ -11,13 +11,13 @@ import com.sidia.ims.imsphone.telephony.OngoingCall;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CallIncomingActivity extends AppCompatActivity implements View.OnClickListener {
+public class CallOutgoingActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView contactNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_call_incoming);
+        setContentView(R.layout.activity_call_outgoing);
 
         contactNumber = findViewById(R.id.contact_number);
         if (getIntent().getData() != null) {
@@ -28,11 +28,7 @@ public class CallIncomingActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.answer_button:
-                OngoingCall.answer();
-                view.setVisibility(View.GONE);
-                break;
-            case R.id.decline_button:
+            case R.id.outgoing_hang_up:
                 OngoingCall.hangup();
                 startActivity(new Intent(this, MainActivity.class));
                 break;

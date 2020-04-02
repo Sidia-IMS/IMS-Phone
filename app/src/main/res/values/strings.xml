@@ -6,6 +6,7 @@
 
     <!-- Call -->
     <string name="incoming_call">Incoming Call</string>
+    <string name="outgoing_call">outgoing call</string>
 
 
     <!-- Common -->
@@ -15,6 +16,7 @@
     <!-- Content description -->
     <string name="content_description_backspace">Backspace</string>
     <string name="content_description_decline">Decline</string>
+    <string name="content_description_hang_up">Hang up</string>
     <string name="content_description_accept">Accept</string>
     <string name="content_description_call_direction">Call direction</string>
     <string name="content_description_detail">Details</string>

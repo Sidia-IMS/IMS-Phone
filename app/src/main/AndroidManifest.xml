@@ -36,6 +36,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".call.CallOutgoingActivity" />
 
         <service
             android:name=".service.ImsPhoneInCallServiceImpl"
