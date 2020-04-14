@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".assistant.PhoneAccountCreationAssistantActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            style="@style/standard_text_font"
+            android:id="@+id/assistant_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:text="@string/assistant_create_account"
+            android:layout_marginTop="10dp"
+            android:paddingTop="10dp"
+            android:textAllCaps="true"/>
+
+        <TextView
+            android:id="@+id/assistant_welcome_desc"
+            style="@style/standard_small_text_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/assistant_welcome"
+            android:gravity="center"
+            android:text="@string/assistant_create_account_part_1"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:id="@+id/phone_nummber_label"
+            style="@style/assistant_input_field_header_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/assistant_welcome_desc"
+            android:textAllCaps="true"
+            android:text="@string/phone_number"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"/>
+
+        <EditText
+            android:id="@+id/dial_code"
+            app:layout_constraintTop_toBottomOf="@id/phone_nummber_label"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/resizable_textfield"
+            android:textColor="@color/textPrimary"
+            android:inputType="phone"
+            android:text="+55"
+            android:gravity="center"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/international_prefix"
+            android:maxLines="1"/>
+
+        <EditText
+            android:id="@+id/phone_number"
+            app:layout_constraintTop_toBottomOf="@id/phone_nummber_label"
+            app:layout_constraintLeft_toRightOf="@id/dial_code"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/resizable_textfield"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/textPrimary"
+            android:inputType="phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_number"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/phone_number_error"
+            style="@style/assistant_input_field_error_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/dial_code"
+            android:layout_marginTop="10dp"
+            android:text="@string/error"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/assistant_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/phone_number_error"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:padding="10dp"
+            android:layout_margin="25dp"
+            android:contentDescription="@string/assistant_create_account"
+            android:text="@string/assistant_create_account"
+            android:onClick="onClick" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

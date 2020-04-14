@@ -3,17 +3,17 @@ package com.sidia.ims.imsphone.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.telecom.TelecomManager;
 import android.view.Menu;
@@ -21,10 +21,14 @@ import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sidia.ims.imsphone.R;
-import com.sidia.ims.imsphone.dialer.DialerFragment;
-import com.sidia.ims.imsphone.history.HistoryFragment;
+import com.sidia.ims.imsphone.assistant.MenuAssistantActivity;
+import com.sidia.ims.imsphone.service.linphone.LinphoneContext;
+import com.sidia.ims.imsphone.service.linphone.LinphoneManager;
+import com.sidia.ims.imsphone.service.linphone.LinphoneService;
+import com.sidia.ims.imsphone.service.linphone.ServiceWaitThread;
+import com.sidia.ims.imsphone.service.linphone.LinphonePreferences;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceWaitThread.Listener {
     private static final int REQUEST_ID = 1;
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -35,15 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            DialerFragment dialerFragment = DialerFragment.newInstance();
-            FragmentTransaction transaction = getTransaction(dialerFragment);
-            transaction.commitNow();
-        }
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-/*
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -52,26 +50,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDrawerLayout(drawer).build();
         NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, mNavController);
-*/
+
         requestRole();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (LinphoneService.isReady()) {
+            onServiceReady();
+        } else {
+            startLinphoneService();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (LinphoneManager.getCore(this) == null) {
+            startLinphoneService();
+        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.history:
-                HistoryFragment historyFragment = HistoryFragment.newInstance();
-                FragmentTransaction historyTransaction = getTransaction(historyFragment);
-
-                historyTransaction.addToBackStack(null);
-                historyTransaction.commit();
+                mNavController.navigate(R.id.nav_history);
                 break;
             case R.id.dialer:
-                DialerFragment dialerFragment = DialerFragment.newInstance();
-                FragmentTransaction dialerTransaction = getTransaction(dialerFragment);
-
-                dialerTransaction.addToBackStack(null);
-                dialerTransaction.commit();
+                mNavController.navigate(R.id.nav_home);
                 break;
             default:
                 break;
@@ -107,11 +117,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private FragmentTransaction getTransaction(Fragment fragment) {
-        fragment.setArguments(getIntent().getExtras());
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment);
+    @Override
+    public void onServiceReady() {
+        if (LinphonePreferences.instance().isFirstLaunch()) {
+            Intent intent = new Intent();
+            intent.setClass(this, MenuAssistantActivity.class);
+            if (getIntent() != null && getIntent().getExtras() != null) {
+                intent.putExtras(getIntent().getExtras());
+            }
+            intent.setAction(getIntent().getAction());
+            intent.setType(getIntent().getType());
+            intent.setData(getIntent().getData());
+            startActivity(intent);
+        }
+    }
 
-        return transaction;
+    private void startLinphoneService() {
+        Intent intent = new Intent().setClass(this, LinphoneService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
+        new ServiceWaitThread(this).start();
     }
 }

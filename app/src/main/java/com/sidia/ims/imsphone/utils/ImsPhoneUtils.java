@@ -2,19 +2,35 @@ package com.sidia.ims.imsphone.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.CallLog;
+import android.provider.Settings;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 
+import com.sidia.ims.imsphone.R;
 import com.sidia.ims.imsphone.activities.ui.mainactivity.ImsPhoneViewModel;
 import com.sidia.ims.imsphone.model.ImsPhoneCallLog;
+
+import org.linphone.mediastream.Version;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class ImsPhoneUtils {
+    private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     public static List<ImsPhoneCallLog> readCallLog(Activity activity) {
         List<ImsPhoneCallLog>  result = new ArrayList<>();
@@ -38,5 +54,43 @@ public class ImsPhoneUtils {
             result.add(obj);
         }
         return result;
+    }
+
+    public static void dispatchOnUIThread(Runnable r) {
+        sHandler.post(r);
+    }
+
+    public static String getDeviceName(Context context) {
+        if (Version.sdkAboveOrEqual(25)) {
+            String name = Settings.Global.getString(
+                    context.getContentResolver(), Settings.Global.DEVICE_NAME);
+
+            if (name != null) {
+                return name;
+            }
+        }
+
+        return Build.MANUFACTURER + " " + Build.MODEL;
+    }
+
+    public static Dialog getDialog(Context context, String text) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Drawable d = new ColorDrawable(ContextCompat.getColor(context, R.color.dark_grey_color));
+        d.setAlpha(200);
+        dialog.setContentView(R.layout.dialog);
+        dialog.getWindow()
+                .setLayout(
+                        WindowManager.LayoutParams.MATCH_PARENT,
+                        WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(d);
+
+        TextView customText = dialog.findViewById(R.id.dialog_message);
+        customText.setText(text);
+        return dialog;
+    }
+
+    public static  String getString(Context context, int key) {
+        return context.getString(key);
     }
 }

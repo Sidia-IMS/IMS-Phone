@@ -28,6 +28,48 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="standard_text_font" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/light_primary_text_color</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="standard_small_text_font" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/grey_color</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Assistant related -->
+
+    <style name="assistant_input_field_error_font" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/red_color</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="assistant_input_field_header_font" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/light_primary_text_color</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Dialog related -->
+
+    <style name="dialog_message_font" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="dialog_cancel_button_font" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/dark_grey_color</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="dialog_action_button_font" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/white_color</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

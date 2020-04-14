@@ -17,7 +17,9 @@ public class ImsPhoneViewModel extends ViewModel {
             Manifest.permission.CALL_PHONE,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.ANSWER_PHONE_CALLS
+            Manifest.permission.ANSWER_PHONE_CALLS,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.READ_PHONE_NUMBERS,
     };
 
     public static boolean checkPermissions(Activity activity, String permissionsNeeded[]) {

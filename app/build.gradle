@@ -1,5 +1,25 @@
 apply plugin: 'com.android.application'
 
+static def isLocalDebugAarAvailable() {
+    File debugAar = new File('linphone-sdk-android/linphone-sdk-android-debug.aar')
+    return debugAar.exists()
+}
+
+static def isLocalReleaseAarAvailable() {
+    File releaseAar = new File('linphone-sdk-android/linphone-sdk-android-release.aar')
+    return releaseAar.exists()
+}
+
+static def isLocalAarAvailable() {
+    return isLocalDebugAarAvailable() || isLocalReleaseAarAvailable()
+}
+
+repositories {
+    maven {
+        url "https://linphone.org/maven_repository"
+    }
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
@@ -36,4 +56,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
+
+    if (isLocalAarAvailable()) {
+        if (isLocalReleaseAarAvailable()) {
+            //debug AAR is a lot bigger than release one, and APK install time will be much longer so use release one for day-to-day development
+            implementation project(path: ":linphone-sdk-android", configuration: 'release')
+        } else {
+            releaseImplementation project(path: ":linphone-sdk-android", configuration: 'release')
+            debugImplementation project(path: ":linphone-sdk-android", configuration: 'debug')
+        }
+    } else {
+        implementation "org.linphone:linphone-sdk-android:4.4+"
+    }
 }

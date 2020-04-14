@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DialerFragment extends Fragment implements View.OnClickListener {
-    int[] digitsId = {
+    public static final String TAG = "dialer";
+    private int[] digitsId = {
             R.id.erase,
             R.id.start_call,
             R.id.Digit00,
@@ -74,6 +75,8 @@ public class DialerFragment extends Fragment implements View.OnClickListener {
         ImsPhoneViewModel.checkPermissions(getActivity(), ImsPhoneViewModel.PERMISSIONS);
     }
 
+
+    @Override
     public void onClick(View view) {
         String currentText = mAddress.getText().toString();
         switch (view.getId()) {

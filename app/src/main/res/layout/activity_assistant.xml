@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".assistant.MenuAssistantActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            style="@style/standard_text_font"
+            android:id="@+id/assistant_welcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:text="@string/welcome"
+            android:layout_marginTop="10dp"
+            android:paddingTop="10dp"
+            android:textAllCaps="true"/>
+
+        <TextView
+            android:id="@+id/assistant_welcome_desc"
+            style="@style/standard_small_text_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/assistant_welcome"
+            android:gravity="center"
+            android:text="@string/assistant_welcome_desc"
+            android:paddingTop="10dp" />
+
+        <Button
+            android:id="@+id/account_creation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/assistant_welcome_desc"
+            android:padding="10dp"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/assistant_create_account"
+            android:text="@string/assistant_create_account"
+            android:onClick="onClick" />
+
+        <Button
+            android:id="@+id/account_connection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/account_creation"
+            android:padding="10dp"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/assistant_login_linphone"
+            android:text="@string/assistant_login_linphone"
+            android:onClick="onClick" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

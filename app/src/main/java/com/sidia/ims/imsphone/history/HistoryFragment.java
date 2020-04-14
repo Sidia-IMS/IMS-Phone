@@ -25,6 +25,7 @@ import com.sidia.ims.imsphone.utils.ImsPhoneUtils;
 import java.util.List;
 
 public class HistoryFragment extends Fragment implements  View.OnClickListener{
+    public static final String  TAG = "history";
     private RecyclerView historyList;
     private View viewInflate;
 

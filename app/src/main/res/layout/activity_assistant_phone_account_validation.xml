@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".assistant.PhoneAccountValidationAssistantActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            style="@style/standard_text_font"
+            android:id="@+id/assitant_validation_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:text="@string/assistant_link_account"
+            android:layout_marginTop="10dp"
+            android:paddingTop="10dp"
+            android:textAllCaps="true"/>
+
+        <TextView
+            android:id="@+id/assistant_account_desc"
+            style="@style/standard_small_text_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/assitant_validation_title"
+            android:gravity="center"
+            android:text="@string/assistant_create_account_part_2"
+            android:paddingTop="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/phone_number"
+            style="@style/standard_text_font"
+            android:paddingTop="10dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/assistant_account_desc"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/assistant_account_desc_2"
+            style="@style/standard_small_text_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/phone_number"
+            android:text="@string/assistant_create_account_part_3"
+            android:gravity="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="10dp"/>
+
+
+        <EditText
+            android:id="@+id/sms_code"
+            app:layout_constraintTop_toBottomOf="@id/assistant_account_desc_2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/resizable_textfield"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/textPrimary"
+            android:inputType="phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/confirmation_code"
+            android:maxLines="1"/>
+
+        <Button
+            android:id="@+id/finish_account_creation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/sms_code"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:padding="10dp"
+            android:layout_margin="25dp"
+            android:contentDescription="@string/assistant_finish"
+            android:text="@string/assistant_finish"
+            android:onClick="onClick" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

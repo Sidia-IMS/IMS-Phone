@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- URLs, URIs and domain -->
+    <!-- Set the default domain used for account creation/addresses -->
+    <string name="default_domain" translatable="false">sip.linphone.org</string>
+
+    <!-- Phone numbers -->
+    <!-- Time between two link your account with phone number dialog in milliseconds -->
+    <integer name="phone_number_linking_popup_time_interval">86400000</integer>
+    <integer name="phone_number_validation_code_length">4</integer>
+
+    <!-- Call -->
+    <bool name="forbid_self_call">false</bool>
+
+    <!-- Notifications -->
+    <bool name="enable_call_notification">true</bool>
+    <integer name="notification_ms_on">1000</integer>
+    <integer name="notification_ms_off">7000</integer>
+</resources>
