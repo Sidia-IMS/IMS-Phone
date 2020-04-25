@@ -2,8 +2,10 @@ package com.sidia.ims.imsphone.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +15,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.CallLog;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -20,6 +23,8 @@ import android.widget.TextView;
 import com.sidia.ims.imsphone.R;
 import com.sidia.ims.imsphone.activities.ui.mainactivity.ImsPhoneViewModel;
 import com.sidia.ims.imsphone.model.ImsPhoneCallLog;
+import com.sidia.ims.imsphone.service.linphone.LinphoneContext;
+import com.sidia.ims.imsphone.service.linphone.LinphoneService;
 
 import org.linphone.mediastream.Version;
 
@@ -30,6 +35,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class ImsPhoneUtils {
+    private static final String LOG_TAG = "SP-Utils";
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     public static List<ImsPhoneCallLog> readCallLog(Activity activity) {
@@ -90,7 +96,34 @@ public class ImsPhoneUtils {
         return dialog;
     }
 
-    public static  String getString(Context context, int key) {
+    public static void displayErrorAlert(String msg, Context ctxt) {
+        if (ctxt != null && msg != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ctxt);
+            builder.setMessage(msg)
+                    .setCancelable(false)
+                    .setNeutralButton(ctxt.getString(R.string.ok), null)
+                    .show();
+        }
+    }
+
+    public static String getString(Context context, int key) {
         return context.getString(key);
+    }
+
+    public static void ensureServiceIsRunning(Context ctx) {
+        if (!LinphoneService.isReady()) {
+            if (!LinphoneContext.isReady()) {
+                new LinphoneContext(ctx.getApplicationContext());
+                LinphoneContext.instance(ctx).start(false);
+                Log.i(LOG_TAG, "[Generic Activity] Context created & started");
+            }
+
+            Log.i(LOG_TAG,"[Generic Activity] Starting Service");
+            try {
+                ctx.startService(new Intent().setClass(ctx, LinphoneService.class));
+            } catch (IllegalStateException ise) {
+                Log.e(LOG_TAG, "[Generic Activity] Couldn't start service, exception: ", ise);
+            }
+        }
     }
 }

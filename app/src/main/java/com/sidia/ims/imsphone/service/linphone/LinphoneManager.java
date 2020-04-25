@@ -13,6 +13,7 @@ import com.sidia.ims.imsphone.R;
 import com.sidia.ims.imsphone.assistant.PhoneAccountLinkingAssistantActivity;
 import com.sidia.ims.imsphone.call.linphone.CallManager;
 import com.sidia.ims.imsphone.utils.ImsPhoneUtils;
+import com.sidia.ims.imsphone.utils.linphone.LinphoneUtils;
 
 import org.linphone.core.AccountCreator;
 import org.linphone.core.AccountCreatorListenerStub;
@@ -27,6 +28,7 @@ import org.linphone.core.Reason;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Timer;
 import java.util.TimerTask;
 
 public class LinphoneManager {
@@ -46,6 +48,8 @@ public class LinphoneManager {
     private boolean mCallGsmON;
     private AccountCreator mAccountCreator;
     private AccountCreatorListenerStub mAccountCreatorListener;
+    private Runnable mIterateRunnable;
+    private Timer mTimer;
 
 
 
@@ -172,11 +176,13 @@ public class LinphoneManager {
     /* Account linking */
 
     public AccountCreator getAccountCreator() {
-        if (mAccountCreator == null && mCore != null) {
-            Log.w(LOG_TAG, "[Manager] Account creator shouldn't be null !");
-            mAccountCreator =
-                    mCore.createAccountCreator(LinphonePreferences.instance().getXmlrpcUrl());
-            mAccountCreator.setListener(mAccountCreatorListener);
+        if (mAccountCreator == null) {
+            if (mCore != null) {
+                Log.d(LOG_TAG, "[Manager] Account creator shouldn't be null !");
+                mAccountCreator =
+                        mCore.createAccountCreator(LinphonePreferences.instance().getXmlrpcUrl());
+                mAccountCreator.setListener(mAccountCreatorListener);
+            }
         }
         return mAccountCreator;
     }
@@ -306,6 +312,7 @@ public class LinphoneManager {
 //FIXME        changeStatusToOffline();
 
         if (mCallManager != null) mCallManager.destroy();
+        if (mTimer != null) mTimer.cancel();
 
         if (mCore != null) {
             destroyCore();
@@ -347,25 +354,25 @@ public class LinphoneManager {
 
             mCore.start();
 
-//FIXME            mIterateRunnable =
-//FIXME                    new Runnable() {
-//FIXME                        @Override
-//FIXME                        public void run() {
-//FIXME                            if (mCore != null) {
-//FIXME                                mCore.iterate();
-//FIXME                            }
-//FIXME                        }
-//FIXME                    };
-//FIXME            TimerTask lTask =
-//FIXME                    new TimerTask() {
-//FIXME                        @Override
-//FIXME                        public void run() {
-//FIXME                            LinphoneUtils.dispatchOnUIThread(mIterateRunnable);
-//FIXME                        }
-//FIXME                    };
+            mIterateRunnable =
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mCore != null) {
+                                mCore.iterate();
+                            }
+                        }
+                    };
+            TimerTask lTask =
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            LinphoneUtils.dispatchOnUIThread(mIterateRunnable);
+                        }
+                    };
             /*use schedule instead of scheduleAtFixedRate to avoid iterate from being call in burst after cpu wake up*/
-//FIXME            mTimer = new Timer("Linphone scheduler");
-//FIXME            mTimer.schedule(lTask, 0, 20);
+            mTimer = new Timer("Linphone scheduler");
+            mTimer.schedule(lTask, 0, 20);
 
             configureCore();
         } catch (Exception e) {

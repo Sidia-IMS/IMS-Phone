@@ -27,7 +27,7 @@ public class AssistantActivity extends AppCompatActivity {
     private static final String LOG_TAG = "SP-AssistantActivity";
 
     public AccountCreator getAccountCreator() {
-        return LinphoneManager.getInstance(this).getAccountCreator();
+        return LinphoneManager.getInstance(getApplicationContext()).getAccountCreator();
     }
 
     protected void showAccountAlreadyExistsDialog() {

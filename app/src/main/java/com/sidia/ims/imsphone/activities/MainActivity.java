@@ -27,6 +27,7 @@ import com.sidia.ims.imsphone.service.linphone.LinphoneManager;
 import com.sidia.ims.imsphone.service.linphone.LinphoneService;
 import com.sidia.ims.imsphone.service.linphone.ServiceWaitThread;
 import com.sidia.ims.imsphone.service.linphone.LinphonePreferences;
+import com.sidia.ims.imsphone.utils.ImsPhoneUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceWaitThread.Listener {
     private static final int REQUEST_ID = 1;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NavigationUI.setupWithNavController(navigationView, mNavController);
 
         requestRole();
+        ImsPhoneUtils.ensureServiceIsRunning(this);
     }
 
     @Override
@@ -69,9 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
 
-        if (LinphoneManager.getCore(this) == null) {
-            startLinphoneService();
-        }
+        ImsPhoneUtils.ensureServiceIsRunning(this);
     }
 
     @Override
