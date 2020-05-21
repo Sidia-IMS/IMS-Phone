@@ -7,6 +7,8 @@ import com.sidia.ims.imsphone.R;
 import com.sidia.ims.imsphone.utils.ImsPhoneUtils;
 import com.sidia.ims.imsphone.utils.linphone.LinphoneUtils;
 
+import org.linphone.core.Address;
+import org.linphone.core.AuthInfo;
 import org.linphone.core.Config;
 import org.linphone.core.Core;
 import org.linphone.core.Factory;
@@ -267,5 +269,49 @@ public class LinphonePreferences {
 
     public void firstLaunchSuccessful() {
         getConfig().setBool("app", "first_launch", false);
+    }
+
+    public int getDefaultAccountIndex() {
+        if (getLc() == null) return -1;
+        ProxyConfig defaultPrxCfg = getLc().getDefaultProxyConfig();
+        if (defaultPrxCfg == null) return -1;
+
+        ProxyConfig[] prxCfgs = getLc().getProxyConfigList();
+        for (int i = 0; i < prxCfgs.length; i++) {
+            if (defaultPrxCfg.getIdentityAddress().equals(prxCfgs[i].getIdentityAddress())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int getAccountCount() {
+        if (getLc() == null || getLc().getProxyConfigList() == null) return 0;
+
+        return getLc().getProxyConfigList().length;
+    }
+
+    private ProxyConfig getProxyConfig(int n) {
+        if (getLc() == null) return null;
+        ProxyConfig[] prxCfgs = getLc().getProxyConfigList();
+        if (n < 0 || n >= prxCfgs.length) return null;
+        return prxCfgs[n];
+    }
+
+    private AuthInfo getAuthInfo(int n) {
+        ProxyConfig prxCfg = getProxyConfig(n);
+        if (prxCfg == null) return null;
+        Address addr = prxCfg.getIdentityAddress();
+        return getLc().findAuthInfo(null, addr.getUsername(), addr.getDomain());
+    }
+
+    public String getAccountDomain(int n) {
+        ProxyConfig proxyConf = getProxyConfig(n);
+        return (proxyConf != null) ? proxyConf.getDomain() : "";
+    }
+
+    public String getAccountUsername(int n) {
+        AuthInfo authInfo = getAuthInfo(n);
+        return authInfo == null ? null : authInfo.getUsername();
     }
 }

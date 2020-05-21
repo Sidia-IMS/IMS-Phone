@@ -78,4 +78,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="unread_count_font" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/white_color</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 </resources>

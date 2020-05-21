@@ -7,6 +7,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.telephony.TelephonyManager;
 
+import com.sidia.ims.imsphone.R;
+
+import org.linphone.core.Address;
+import org.linphone.core.RegistrationState;
+import org.linphone.core.tools.Log;
+
 public class LinphoneUtils {
     private static final Handler sHandler = new Handler(Looper.getMainLooper());
 
@@ -44,4 +50,34 @@ public class LinphoneUtils {
         sHandler.removeCallbacks(r);
     }
 
+    public static String getAddressDisplayName(Address address) {
+        if (address == null) return null;
+
+        String displayName = address.getDisplayName();
+        if (displayName == null || displayName.isEmpty()) {
+            displayName = address.getUsername();
+        }
+        if (displayName == null || displayName.isEmpty()) {
+            displayName = address.asStringUriOnly();
+        }
+        return displayName;
+    }
+
+    public static int getStatusIconResource(RegistrationState state) {
+        try {
+            if (state == RegistrationState.Ok) {
+                return R.drawable.led_connected;
+            } else if (state == RegistrationState.Progress) {
+                return R.drawable.led_inprogress;
+            } else if (state == RegistrationState.Failed) {
+                return R.drawable.led_error;
+            } else {
+                return R.drawable.led_disconnected;
+            }
+        } catch (Exception e) {
+            Log.e(e);
+        }
+
+        return R.drawable.led_disconnected;
+    }
 }

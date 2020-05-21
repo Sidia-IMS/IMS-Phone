@@ -23,6 +23,8 @@ import org.linphone.core.Core;
 import org.linphone.core.CoreListener;
 import org.linphone.core.CoreListenerStub;
 import org.linphone.core.Factory;
+import org.linphone.core.PresenceBasicStatus;
+import org.linphone.core.PresenceModel;
 import org.linphone.core.ProxyConfig;
 import org.linphone.core.Reason;
 
@@ -34,7 +36,6 @@ import java.util.TimerTask;
 public class LinphoneManager {
     private static String LOG_TAG = "SP-LinphoneManager";
     private final String mBasePath;
-    private final String mRingSoundFile;
     private final String mCallLogDatabaseFile;
     private final String mUserCertsPath;
 
@@ -57,7 +58,6 @@ public class LinphoneManager {
         mContext = context;
         mBasePath = context.getFilesDir().getAbsolutePath();
         mCallLogDatabaseFile = mBasePath + "/linphone-log-history.db";
-        mRingSoundFile = mBasePath + "/share/sounds/linphone/rings/notes_of_the_optimistic.mkv";
         mUserCertsPath = mBasePath + "/user-certs";
         mExited = false;
 
@@ -187,153 +187,24 @@ public class LinphoneManager {
         return mAccountCreator;
     }
 
-    private void askLinkWithPhoneNumber() {
-        if (!LinphonePreferences.instance().isLinkPopupEnabled()) return;
-
-        long now = new Timestamp(new Date().getTime()).getTime();
-        if (LinphonePreferences.instance().getLinkPopupTime() != null
-                && Long.parseLong(LinphonePreferences.instance().getLinkPopupTime()) >= now) return;
-
-        ProxyConfig proxyConfig = mCore.getDefaultProxyConfig();
-        if (proxyConfig == null) return;
-        if (!proxyConfig.getDomain().equals(ImsPhoneUtils.getString(mContext, R.string.default_domain))) return;
-
-        long future = new Timestamp(mContext.getResources().getInteger(
-                R.integer.phone_number_linking_popup_time_interval))
-                        .getTime();
-        long newDate = now + future;
-
-        LinphonePreferences.instance().setLinkPopupTime(String.valueOf(newDate));
-
-        final Dialog dialog = ImsPhoneUtils.getDialog(mContext, String.format(
-                ImsPhoneUtils.getString(mContext, R.string.link_account_popup),
-                                proxyConfig.getIdentityAddress().asStringUriOnly()));
-
-        Button btnOk = dialog.findViewById(R.id.dialog_ok_button);
-        btnOk.setText(ImsPhoneUtils.getString(mContext, R.string.link));
-        btnOk.setVisibility(View.VISIBLE);
-
-        Button btnCancel = dialog.findViewById(R.id.dialog_cancel_button);
-        btnCancel.setText(ImsPhoneUtils.getString(mContext, R.string.maybe_later));
-
-        final CheckBox doNotAskAgain = dialog.findViewById(R.id.doNotAskAgain);
-        doNotAskAgain.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                doNotAskAgain.setChecked(!doNotAskAgain.isChecked());
-                            }
-                        });
-
-        btnOk.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent assistant = new Intent();
-                        assistant.setClass(mContext, PhoneAccountLinkingAssistantActivity.class);
-                        mContext.startActivity(assistant);
-                        dialog.dismiss();
-                    }
-                });
-
-        btnCancel.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (doNotAskAgain.isChecked()) {
-                            LinphonePreferences.instance().enableLinkPopup(false);
-                        }
-                        dialog.dismiss();
-                    }
-                });
-        dialog.show();
-    }
-
-
-    public synchronized void destroy() {
-        destroyManager();
-        // Wait for Manager to destroy everything before setting mExited to true
-        // Otherwise some objects might crash during their own destroy if they try to call
-        // LinphoneManager.getCore(), for example to unregister a listener
-        mExited = true;
-    }
-
-    public void restartCore() {
-        Log.w(LOG_TAG,"[Manager] Restarting Core");
-        mCore.stop();
-        mCore.start();
-    }
-
-    public boolean getCallGsmON() {
-        return mCallGsmON;
-    }
-
-    public void setCallGsmON(boolean on) {
-        mCallGsmON = on;
-        if (on && mCore != null) {
-            mCore.pauseAllCalls();
-        }
-    }
-
-    private synchronized void configureCore() {
-        Log.i(LOG_TAG,"[Manager] Configuring Core");
-
-        String deviceName = mPrefs.getDeviceName(mContext);
-        String appName = mContext.getResources().getString(R.string.user_agent);
-        String androidVersion = BuildConfig.VERSION_NAME;
-        String userAgent = appName + "/" + androidVersion + " (" + deviceName + ") LinphoneSDK";
-
-        mCore.setZrtpSecretsFile(mBasePath + "/zrtp_secrets");
-        mCore.setUserAgent(
-                userAgent,
-                ImsPhoneUtils.getString(mContext, R.string.linphone_sdk_version)
-                        + " ("
-                        + ImsPhoneUtils.getString(mContext, R.string.linphone_sdk_branch)
-                        + ")");
-
-        mCore.setCallLogsDatabasePath(mCallLogDatabaseFile);
-        mCore.setUserCertificatesPath(mUserCertsPath);
-//FIXME        enableDeviceRingtone(mPrefs.isDeviceRingtoneEnabled());
-
-        int availableCores = Runtime.getRuntime().availableProcessors();
-        Log.w(LOG_TAG,"[Manager] MediaStreamer : " + availableCores + " cores detected and configured");
-
-        mCore.migrateLogsFromRcToDb();
-
-        mAccountCreator = mCore.createAccountCreator(LinphonePreferences.instance().getXmlrpcUrl());
-        mAccountCreator.setListener(mAccountCreatorListener);
-        mCallGsmON = false;
-
-        Log.i(LOG_TAG,"[Manager] Core configured");
-    }
-
-    private synchronized void destroyManager() {
-        Log.w(LOG_TAG,"[Manager] Destroying Manager");
-//FIXME        changeStatusToOffline();
-
-        if (mCallManager != null) mCallManager.destroy();
-        if (mTimer != null) mTimer.cancel();
-
-        if (mCore != null) {
-            destroyCore();
-            mCore = null;
-        }
-    }
-
-    private void destroyCore() {
-        Log.w(LOG_TAG,"[Manager] Destroying Core");
-        if (LinphonePreferences.instance() != null) {
-            // We set network reachable at false before destroying the Core
-            // to not send a register with expires at 0
-            if (LinphonePreferences.instance().isPushNotificationEnabled()) {
-                Log.w(LOG_TAG,
-                        "[Manager] Setting network reachability to False to prevent unregister and allow incoming push notifications");
-                mCore.setNetworkReachable(false);
+    public void isAccountWithAlias() {
+        if (mCore.getDefaultProxyConfig() != null) {
+            long now = new Timestamp(new Date().getTime()).getTime();
+            AccountCreator accountCreator = getAccountCreator();
+            if (LinphonePreferences.instance().getLinkPopupTime() == null
+                    || Long.parseLong(LinphonePreferences.instance().getLinkPopupTime()) < now) {
+                accountCreator.reset();
+                accountCreator.setUsername(
+                        LinphonePreferences.instance()
+                                .getAccountUsername(
+                                        LinphonePreferences.instance().getDefaultAccountIndex()));
+                accountCreator.isAccountExist();
             }
+        } else {
+            LinphonePreferences.instance().setLinkPopupTime(null);
         }
-        mCore.stop();
-        mCore.removeListener(mCoreListener);
     }
+
 
     public synchronized void startLibLinphone(boolean isPush, CoreListener listener) {
         try {
@@ -387,6 +258,161 @@ public class LinphoneManager {
     public void doVoIPCall(String phoneNumber) {
         if (phoneNumber.length() > 0) {
             LinphoneManager.getCallManager(mContext).newOutgoingCall(phoneNumber);
+        }
+    }
+
+    public synchronized void destroy() {
+        destroyManager();
+        // Wait for Manager to destroy everything before setting mExited to true
+        // Otherwise some objects might crash during their own destroy if they try to call
+        // LinphoneManager.getCore(), for example to unregister a listener
+        mExited = true;
+    }
+
+    public void restartCore() {
+        Log.w(LOG_TAG,"[Manager] Restarting Core");
+        mCore.stop();
+        mCore.start();
+    }
+
+    public boolean getCallGsmON() {
+        return mCallGsmON;
+    }
+
+    public void setCallGsmON(boolean on) {
+        mCallGsmON = on;
+        if (on && mCore != null) {
+            mCore.pauseAllCalls();
+        }
+    }
+
+    private void askLinkWithPhoneNumber() {
+        if (!LinphonePreferences.instance().isLinkPopupEnabled()) return;
+
+        long now = new Timestamp(new Date().getTime()).getTime();
+        if (LinphonePreferences.instance().getLinkPopupTime() != null
+                && Long.parseLong(LinphonePreferences.instance().getLinkPopupTime()) >= now) return;
+
+        ProxyConfig proxyConfig = mCore.getDefaultProxyConfig();
+        if (proxyConfig == null) return;
+        if (!proxyConfig.getDomain().equals(ImsPhoneUtils.getString(mContext, R.string.default_domain))) return;
+
+        long future = new Timestamp(mContext.getResources().getInteger(
+                R.integer.phone_number_linking_popup_time_interval))
+                .getTime();
+        long newDate = now + future;
+
+        LinphonePreferences.instance().setLinkPopupTime(String.valueOf(newDate));
+
+        final Dialog dialog = ImsPhoneUtils.getDialog(mContext, String.format(
+                ImsPhoneUtils.getString(mContext, R.string.link_account_popup),
+                proxyConfig.getIdentityAddress().asStringUriOnly()));
+
+        Button btnOk = dialog.findViewById(R.id.dialog_ok_button);
+        btnOk.setText(ImsPhoneUtils.getString(mContext, R.string.link));
+        btnOk.setVisibility(View.VISIBLE);
+
+        Button btnCancel = dialog.findViewById(R.id.dialog_cancel_button);
+        btnCancel.setText(ImsPhoneUtils.getString(mContext, R.string.maybe_later));
+
+        final CheckBox doNotAskAgain = dialog.findViewById(R.id.doNotAskAgain);
+        doNotAskAgain.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        doNotAskAgain.setChecked(!doNotAskAgain.isChecked());
+                    }
+                });
+
+        btnOk.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent assistant = new Intent();
+                        assistant.setClass(mContext, PhoneAccountLinkingAssistantActivity.class);
+                        mContext.startActivity(assistant);
+                        dialog.dismiss();
+                    }
+                });
+
+        btnCancel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (doNotAskAgain.isChecked()) {
+                            LinphonePreferences.instance().enableLinkPopup(false);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+        dialog.show();
+    }
+
+    private synchronized void configureCore() {
+        Log.i(LOG_TAG,"[Manager] Configuring Core");
+
+        String deviceName = mPrefs.getDeviceName(mContext);
+        String appName = mContext.getResources().getString(R.string.user_agent);
+        String androidVersion = BuildConfig.VERSION_NAME;
+        String userAgent = appName + "/" + androidVersion + " (" + deviceName + ") LinphoneSDK";
+
+        mCore.setZrtpSecretsFile(mBasePath + "/zrtp_secrets");
+        mCore.setUserAgent(
+                userAgent,
+                ImsPhoneUtils.getString(mContext, R.string.linphone_sdk_version)
+                        + " ("
+                        + ImsPhoneUtils.getString(mContext, R.string.linphone_sdk_branch)
+                        + ")");
+
+        mCore.setCallLogsDatabasePath(mCallLogDatabaseFile);
+        mCore.setUserCertificatesPath(mUserCertsPath);
+//FIXME        enableDeviceRingtone(mPrefs.isDeviceRingtoneEnabled());
+
+        int availableCores = Runtime.getRuntime().availableProcessors();
+        Log.w(LOG_TAG,"[Manager] MediaStreamer : " + availableCores + " cores detected and configured");
+
+        mCore.migrateLogsFromRcToDb();
+
+        mAccountCreator = mCore.createAccountCreator(LinphonePreferences.instance().getXmlrpcUrl());
+        mAccountCreator.setListener(mAccountCreatorListener);
+        mCallGsmON = false;
+
+        Log.i(LOG_TAG,"[Manager] Core configured");
+    }
+
+    private synchronized void destroyManager() {
+        Log.w(LOG_TAG,"[Manager] Destroying Manager");
+        changeStatusToOffline();
+
+        if (mCallManager != null) mCallManager.destroy();
+        if (mTimer != null) mTimer.cancel();
+
+        if (mCore != null) {
+            destroyCore();
+            mCore = null;
+        }
+    }
+
+    private void destroyCore() {
+        Log.w(LOG_TAG,"[Manager] Destroying Core");
+        if (LinphonePreferences.instance() != null) {
+            // We set network reachable at false before destroying the Core
+            // to not send a register with expires at 0
+            if (LinphonePreferences.instance().isPushNotificationEnabled()) {
+                Log.w(LOG_TAG,
+                        "[Manager] Setting network reachability to False to prevent unregister and allow incoming push notifications");
+                mCore.setNetworkReachable(false);
+            }
+        }
+        mCore.stop();
+        mCore.removeListener(mCoreListener);
+    }
+
+    private void changeStatusToOffline() {
+        if (mCore != null) {
+            PresenceModel model = mCore.getPresenceModel();
+            model.setBasicStatus(PresenceBasicStatus.Closed);
+            mCore.setPresenceModel(model);
         }
     }
 }

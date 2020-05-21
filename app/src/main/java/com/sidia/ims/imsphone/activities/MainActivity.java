@@ -8,32 +8,37 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.role.RoleManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.telecom.TelecomManager;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.sidia.ims.imsphone.R;
 import com.sidia.ims.imsphone.assistant.MenuAssistantActivity;
-import com.sidia.ims.imsphone.service.linphone.LinphoneContext;
+import com.sidia.ims.imsphone.menu.SideMenuViewModel;
 import com.sidia.ims.imsphone.service.linphone.LinphoneManager;
 import com.sidia.ims.imsphone.service.linphone.LinphoneService;
 import com.sidia.ims.imsphone.service.linphone.ServiceWaitThread;
 import com.sidia.ims.imsphone.service.linphone.LinphonePreferences;
+import com.sidia.ims.imsphone.settings.SettingsActivity;
 import com.sidia.ims.imsphone.utils.ImsPhoneUtils;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceWaitThread.Listener {
-    private static final int REQUEST_ID = 1;
+import org.linphone.core.AuthInfo;
+import org.linphone.core.Call;
+import org.linphone.core.Core;
+import org.linphone.core.CoreListenerStub;
+import org.linphone.core.ProxyConfig;
+import org.linphone.core.RegistrationState;
 
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ServiceWaitThread.Listener {
     private AppBarConfiguration mAppBarConfiguration;
     private NavController mNavController;
+    private CoreListenerStub mListener;
+    private TextView mMissedCalls;
+    private SideMenuViewModel mSideMenuViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +56,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setDrawerLayout(drawer).build();
         NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, mNavController);
+        View hView =  navigationView.getHeaderView(0);
 
-        requestRole();
         ImsPhoneUtils.ensureServiceIsRunning(this);
+
+        mMissedCalls = findViewById(R.id.missed_calls);
+        mSideMenuViewModel = new SideMenuViewModel(this, hView);
+        mListener =
+                new CoreListenerStub() {
+                    @Override
+                    public void onCallStateChanged(
+                            Core core, Call call, Call.State state, String message) {
+                        if (state == Call.State.End || state == Call.State.Released) {
+                            displayMissedCalls();
+                        }
+                    }
+
+                    @Override
+                    public void onRegistrationStateChanged(
+                            Core core,
+                            ProxyConfig proxyConfig,
+                            RegistrationState state,
+                            String message) {
+                        mSideMenuViewModel.displayAccountsInSideMenu();
+
+                        if (state == RegistrationState.Ok) {
+                            AuthInfo authInfo =
+                                    core.findAuthInfo(
+                                            proxyConfig.getRealm(),
+                                            proxyConfig.getIdentityAddress().getUsername(),
+                                            proxyConfig.getDomain());
+                            if (authInfo != null
+                                    && authInfo.getDomain()
+                                    .equals(getString(R.string.default_domain))) {
+                                LinphoneManager.getInstance(getApplicationContext()).isAccountWithAlias();
+                            }
+                        }
+                    }
+                };
     }
 
     @Override
@@ -72,6 +112,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
 
         ImsPhoneUtils.ensureServiceIsRunning(this);
+        Core core = LinphoneManager.getCore(this);
+        if (core != null) {
+            core.addListener(mListener);
+            displayMissedCalls();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        Core core = LinphoneManager.getCore(this);
+        if (core != null) {
+            core.removeListener(mListener);
+        }
+
+        super.onPause();
     }
 
     @Override
@@ -100,23 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 || super.onSupportNavigateUp();
     }
 
-    private void requestRole() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            @SuppressLint("WrongConstant")
-            RoleManager roleManager = (RoleManager) getSystemService(Context.ROLE_SERVICE);
-            Intent intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER);
-
-            startActivityForResult(intent, REQUEST_ID);
-        } else {
-            TelecomManager tm = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
-            if (tm.getDefaultDialerPackage() != getPackageName()) {
-                Intent intent = new Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER)
-                        .putExtra(TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, getPackageName());
-                startActivity(intent);
-            }
-        }
-    }
-
     @Override
     public void onServiceReady() {
         if (LinphonePreferences.instance().isFirstLaunch()) {
@@ -132,6 +170,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        mMissedCalls = null;
+        mListener = null;
+
+        super.onDestroy();
+    }
+
+    public void showAccountSettings(int accountIndex) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        addFlagsToIntent(intent);
+        intent.putExtra("Account", accountIndex);
+        startActivity(intent);
+    }
+
+    protected void displayMissedCalls() {
+        int count = 0;
+        Core core = LinphoneManager.getCore(this);
+        if (core != null) {
+            count = core.getMissedCallsCount();
+        }
+
+        if (count > 0) {
+            mMissedCalls.setText(String.valueOf(count));
+            mMissedCalls.setVisibility(View.VISIBLE);
+        } else {
+            mMissedCalls.clearAnimation();
+            mMissedCalls.setVisibility(View.GONE);
+        }
+    }
+
     private void startLinphoneService() {
         Intent intent = new Intent().setClass(this, LinphoneService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -140,5 +209,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startService(intent);
         }
         new ServiceWaitThread(this).start();
+    }
+
+    private void addFlagsToIntent(Intent intent) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     }
 }

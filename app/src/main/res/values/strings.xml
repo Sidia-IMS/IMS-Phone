@@ -25,6 +25,7 @@
     <string name="maybe_later">Maybe later</string>
     <string name="ok">OK</string>
     <string name="do_not_ask_again">Do not show again</string>
+    <string name="no_account">No account configured</string>
 
     <!-- Content description -->
     <string name="content_description_backspace">Backspace</string>

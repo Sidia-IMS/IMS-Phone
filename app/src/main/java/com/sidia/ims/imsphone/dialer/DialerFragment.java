@@ -16,15 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.sidia.ims.imsphone.R;
 import com.sidia.ims.imsphone.activities.ui.mainactivity.ImsPhoneViewModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DialerFragment extends Fragment implements View.OnClickListener {
     public static final String TAG = "dialer";
