@@ -1,5 +1,6 @@
 package com.sidia.ims.imsphone.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,7 +25,6 @@ import com.sidia.ims.imsphone.service.linphone.LinphoneManager;
 import com.sidia.ims.imsphone.service.linphone.LinphoneService;
 import com.sidia.ims.imsphone.service.linphone.ServiceWaitThread;
 import com.sidia.ims.imsphone.service.linphone.LinphonePreferences;
-import com.sidia.ims.imsphone.settings.SettingsActivity;
 import com.sidia.ims.imsphone.utils.ImsPhoneUtils;
 
 import org.linphone.core.AuthInfo;
@@ -150,6 +151,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                mNavController.navigate(R.id.nav_about);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(mNavController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
@@ -160,12 +172,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (LinphonePreferences.instance().isFirstLaunch()) {
             Intent intent = new Intent();
             intent.setClass(this, MenuAssistantActivity.class);
-            if (getIntent() != null && getIntent().getExtras() != null) {
-                intent.putExtras(getIntent().getExtras());
+            if (getIntent() != null) {
+                if (getIntent().getExtras() != null) {
+                    intent.putExtras(getIntent().getExtras());
+                }
+                intent.setAction(getIntent().getAction());
+                intent.setType(getIntent().getType());
+                intent.setData(getIntent().getData());
             }
-            intent.setAction(getIntent().getAction());
-            intent.setType(getIntent().getType());
-            intent.setData(getIntent().getData());
             startActivity(intent);
         }
     }
@@ -179,10 +193,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showAccountSettings(int accountIndex) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        addFlagsToIntent(intent);
-        intent.putExtra("Account", accountIndex);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("Account", accountIndex);
+        mNavController.navigate(R.id.nav_settings, bundle);
     }
 
     protected void displayMissedCalls() {
@@ -209,9 +222,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startService(intent);
         }
         new ServiceWaitThread(this).start();
-    }
-
-    private void addFlagsToIntent(Intent intent) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
     }
 }

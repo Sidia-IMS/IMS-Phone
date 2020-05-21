@@ -15,6 +15,21 @@
             android:id="@+id/action_DialerFragment_to_AboutFragment"
             app:destination="@+id/nav_about"
             />
+        <action
+            android:id="@+id/action_DialerFragment_to_SettingsFragment"
+            app:destination="@+id/nav_settings"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.sidia.ims.imsphone.settings.SettingsFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/action_SettingsFragment_to_DialerFragment"
+            app:destination="@+id/nav_home"
+            />
     </fragment>
     <fragment
         android:id="@+id/nav_about"
